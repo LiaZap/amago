@@ -86,6 +86,18 @@
   }
 }
 
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
 /* --- Resets & Base --- */
 * {
   margin: 0;
@@ -464,14 +476,15 @@ h3 span {
   margin-top: 16px;
 }
 
-/* --- Hero Section --- */
+/* --- Header / Hero */
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 80px;
+  text-align: center;
+  padding: 120px 24px 80px; /* Added bottom padding to make room for scroll arrow */
   overflow: hidden;
   color: var(--text-primary); /* Ensure text is dark on light hero */
 }
@@ -535,21 +548,24 @@ h3 span {
 
 .scroll-indicator {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  opacity: 0.6;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 10;
 }
 
-.scroll-indicator p {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+.bounce-arrow {
+  font-size: 1.5rem;
+  color: var(--accent-core);
+  animation: bounce 2s infinite;
 }
 
 .mouse {
@@ -1015,6 +1031,11 @@ label {
   }
   .mobile-menu-btn {
     display: block;
+  }
+
+  .hero {
+    min-height: auto; /* Allow content to dictate height on mobile to prevent overlapping */
+    padding: 150px 24px 100px;
   }
 
   .hero-title {
