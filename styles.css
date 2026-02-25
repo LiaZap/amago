@@ -391,19 +391,11 @@ h3 span {
 }
 
 .logo-img {
-  height: 80px;
+  height: 90px;
   width: auto;
   object-fit: contain;
-  margin-top: -10px;
-  margin-bottom: -10px;
-  mix-blend-mode: multiply;
-  transition: var(--transition);
-}
-
-.navbar.scrolled .logo-img {
-  height: 60px;
-  margin-top: -5px;
-  margin-bottom: -5px;
+  margin-top: -20px;
+  margin-bottom: -20px;
 }
 
 .nav-links {
