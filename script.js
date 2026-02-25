@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const text = `Olá, vim pelo site da Âmago. %0A%0A*Nome:* ${nome} %0A*Telefone:* ${telefone} %0A*Área de Interesse:* ${assunto} %0A*Mensagem:* ${mensagem}`;
 
-    const whatsappNumber = "554498215537";
+    const whatsappNumber = "554499810875";
     window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
   });
 });
