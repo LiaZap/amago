@@ -391,11 +391,12 @@ h3 span {
 }
 
 .logo-img {
-  height: 150px;
+  height: 130px;
   width: auto;
   object-fit: contain;
-  margin-top: -40px;
-  margin-bottom: -40px;
+  margin-top: -30px;
+  margin-bottom: -30px;
+  mix-blend-mode: multiply;
 }
 
 .nav-links {
