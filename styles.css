@@ -502,8 +502,14 @@ h3 span {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
+}
+
+#threads-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .hero-bg-image {
@@ -536,7 +542,7 @@ h3 span {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   text-align: center;
   max-width: 800px;
   padding: 0 24px;
