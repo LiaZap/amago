@@ -1,6 +1,6 @@
 /**
  * Threads Animation - Ported from React Bits to Vanilla JS
- * Optimized for Mobile Performance
+ * Optimized for Mobile Performance (Extreme V2)
  */
 
 import {
@@ -37,7 +37,8 @@ uniform vec2 uMouse;
 
 #define PI 3.1415926538
 
-const int u_line_count = ${isMobile ? "15" : "40"};
+// Redução drástica para mobile (5 linhas) vs desktop (40 linhas)
+const int u_line_count = ${isMobile ? "5" : "40"};
 const float u_line_width = 7.0;
 const float u_line_blur = 10.0;
 
@@ -143,9 +144,8 @@ function initThreads(containerSelector, options = {}) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
 
-  const dpr = isMobile
-    ? Math.min(window.devicePixelRatio, 1.5)
-    : window.devicePixelRatio;
+  // Otimização extrema: DPR 1.0 no mobile
+  const dpr = isMobile ? 1.0 : window.devicePixelRatio;
 
   const renderer = new Renderer({ alpha: true, dpr });
   const gl = renderer.gl;
@@ -186,36 +186,16 @@ function initThreads(containerSelector, options = {}) {
   window.addEventListener("resize", resize);
   resize();
 
-  let currentMouse = [0.5, 0.5];
-  let targetMouse = [0.5, 0.5];
-
-  function handleMouseMove(e) {
-    const rect = container.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = 1.0 - (e.clientY - rect.top) / rect.height;
-    targetMouse = [x, y];
-  }
-  function handleMouseLeave() {
-    targetMouse = [0.5, 0.5];
-  }
-  if (enableMouseInteraction) {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
-  }
-
+  let lastT = 0;
   function update(t) {
-    if (enableMouseInteraction) {
-      const smoothing = 0.05;
-      currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
-      currentMouse[1] += smoothing * (targetMouse[1] - currentMouse[1]);
-      program.uniforms.uMouse.value[0] = currentMouse[0];
-      program.uniforms.uMouse.value[1] = currentMouse[1];
-    } else {
-      program.uniforms.uMouse.value[0] = 0.5;
-      program.uniforms.uMouse.value[1] = 0.5;
+    // Só renderiza se houver tempo significativo ou limitar FPS no mobile
+    if (isMobile && t - lastT < 30) { // Limitado a ~33 FPS no mobile
+       requestAnimationFrame(update);
+       return;
     }
-    program.uniforms.iTime.value = t * 0.001;
+    lastT = t;
 
+    program.uniforms.iTime.value = t * 0.001;
     renderer.render({ scene: mesh });
     requestAnimationFrame(update);
   }
@@ -224,8 +204,8 @@ function initThreads(containerSelector, options = {}) {
 
 // Initialize on the hero background
 initThreads("#threads-container", {
-  color: [0.32, 0.15, 1], // Requested purple
+  color: [0.32, 0.15, 1],
   amplitude: 1,
   distance: 0,
-  enableMouseInteraction: true,
+  enableMouseInteraction: !isMobile, // Desativar interação de mouse no mobile
 });
