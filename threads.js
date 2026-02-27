@@ -1,6 +1,6 @@
 /**
  * Threads Animation - Ported from React Bits to Vanilla JS
- * Uses OGL library for WebGL rendering
+ * Optimized for Mobile Performance
  */
 
 import {
@@ -10,6 +10,10 @@ import {
   Triangle,
   Color,
 } from "https://cdn.skypack.dev/ogl";
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  navigator.userAgent
+);
 
 const vertexShader = `
 attribute vec2 position;
@@ -33,7 +37,7 @@ uniform vec2 uMouse;
 
 #define PI 3.1415926538
 
-const int u_line_count = 40;
+const int u_line_count = ${isMobile ? "15" : "40"};
 const float u_line_width = 7.0;
 const float u_line_blur = 10.0;
 
@@ -139,7 +143,11 @@ function initThreads(containerSelector, options = {}) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
 
-  const renderer = new Renderer({ alpha: true, dpr: window.devicePixelRatio });
+  const dpr = isMobile
+    ? Math.min(window.devicePixelRatio, 1.5)
+    : window.devicePixelRatio;
+
+  const renderer = new Renderer({ alpha: true, dpr });
   const gl = renderer.gl;
   gl.clearColor(0, 0, 0, 0);
   gl.enable(gl.BLEND);
@@ -156,7 +164,7 @@ function initThreads(containerSelector, options = {}) {
         value: new Color(
           gl.canvas.width,
           gl.canvas.height,
-          gl.canvas.width / gl.canvas.height,
+          gl.canvas.width / gl.canvas.height
         ),
       },
       uColor: { value: new Color(...color) },
